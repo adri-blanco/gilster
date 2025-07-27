@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
-import { pause, play } from "../services/spotify-api";
+import { pause, play, getDevice } from "../services/spotify-api";
+import DeviceConnection from "../components/DeviceConnection";
 
 export default function Game() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showSong, setShowSong] = useState(false);
+  const [device, setDevice] = useState<SpotifyApi.UserDevice | null>(null);
+
+  useEffect(() => {
+    getDevice().then((device) => {
+      setDevice(device);
+    });
+  }, []);
 
   const togglePlay = () => {
-    if (isPlaying) {
-      play("spotify:track:68BTFws92cRztMS1oQ7Ewj").catch((error) => {
-        console.error("Error playing track:", error);
-      });
+    if (!isPlaying && device) {
+      play("spotify:track:68BTFws92cRztMS1oQ7Ewj", device?.id || "").catch(
+        (error) => {
+          console.error("Error playing track:", error);
+        }
+      );
     } else {
       pause();
     }
@@ -17,9 +28,24 @@ export default function Game() {
   };
 
   return (
-    <View>
+    <View className="flex-1 items-center justify-center gap-16">
       <Text>Game page</Text>
-      <Button title={isPlaying ? "Playing" : "Paused"} onPress={togglePlay} />
+      <Button title={isPlaying ? "Pause" : "Play"} onPress={togglePlay} />
+      <Button
+        title="See answer"
+        onPress={() => {
+          setShowSong(!showSong);
+        }}
+      />
+
+      {showSong && (
+        <View>
+          <Text>Now Playing: "Track Name"</Text>
+          <Text>Artist: "Artist Name"</Text>
+        </View>
+      )}
+
+      <DeviceConnection device={device} />
     </View>
   );
 }
