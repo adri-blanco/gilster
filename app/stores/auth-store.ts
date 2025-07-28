@@ -31,6 +31,7 @@ const useAuthStore = create<AuthStore>()(
         return (state) => {
           if (state && state.accessToken) {
             spotifyApi.setAccessToken(state.accessToken);
+            spotifyApi.setRefreshToken(state.refreshToken || "");
           }
         };
       },

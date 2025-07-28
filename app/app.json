@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "gilster-app",
-    "slug": "gilster-app",
+    "name": "Gilster",
+    "slug": "gilster",
+    "scheme": "gilster",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
-import { pause, play, getDevice } from "../services/spotify-api";
+import { pause, play, getDevice } from "../services/spotify-services";
 import DeviceConnection from "../components/DeviceConnection";
 
 export default function Game() {
