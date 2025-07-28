@@ -1,9 +1,9 @@
 import { TokenResponse } from "expo-auth-session";
-import useAuthStore from "../stores/auth-store";
+import useAppStore from "../stores/app-store";
 import spotifyApi from "./spotify-api";
 
 export function updateTokens(tokenResponse: TokenResponse) {
-  const setAuth = useAuthStore.getState().setAuth;
+  const setAuth = useAppStore.getState().setAuth;
 
   spotifyApi.setAccessToken(tokenResponse.accessToken);
   if (tokenResponse.refreshToken) {
@@ -22,7 +22,7 @@ export function updateTokens(tokenResponse: TokenResponse) {
 
 async function beforeApiCall() {
   try {
-    const expiresAt = useAuthStore.getState().expiresAt;
+    const expiresAt = useAppStore.getState().expiresAt;
 
     if (new Date().getTime() > expiresAt - 10000) {
       const url = "https://accounts.spotify.com/api/token";

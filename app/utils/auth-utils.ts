@@ -1,8 +1,8 @@
 import { useShallow } from "zustand/react/shallow";
-import useAuthStore from "../stores/auth-store";
+import useAppStore from "../stores/app-store";
 
 export const isLoggedIn = () => {
-  const [accessToken, refreshToken, expiresAt] = useAuthStore(
+  const [accessToken, refreshToken, expiresAt] = useAppStore(
     useShallow((state) => [
       state.accessToken,
       state.refreshToken,
