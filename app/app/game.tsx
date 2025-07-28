@@ -9,18 +9,23 @@ export default function Game() {
   const [device, setDevice] = useState<SpotifyApi.UserDevice | null>(null);
 
   useEffect(() => {
-    getDevice().then((device) => {
-      setDevice(device);
-    });
+    getDevice()
+      .then((device) => {
+        setDevice(device);
+      })
+      .catch((error) => {
+        console.error("Error fetching device:", error);
+      });
   }, []);
 
   const togglePlay = () => {
     if (!isPlaying && device) {
-      play("spotify:track:68BTFws92cRztMS1oQ7Ewj", device?.id || "").catch(
-        (error) => {
-          console.error("Error playing track:", error);
-        }
-      );
+      play(
+        "spotify:track:68BTFws92cRztMS1oQ7Ewj",
+        device.id || undefined
+      ).catch((error) => {
+        console.error("Error playing track:", error);
+      });
     } else {
       pause();
     }

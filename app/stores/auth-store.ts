@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import spotifyApi from "../services/spotify-api";
 
 interface AuthStore {
   accessToken: string | null;
@@ -22,7 +23,18 @@ const useAuthStore = create<AuthStore>()(
       setAuth: (accessToken: string, refreshToken: string, expiresAt: number) =>
         set(() => ({ accessToken, refreshToken, expiresAt })),
     }),
-    { name: "auth-storage", storage: createJSONStorage(() => AsyncStorage) }
+    {
+      name: "auth-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+
+      onRehydrateStorage() {
+        return (state) => {
+          if (state && state.accessToken) {
+            spotifyApi.setAccessToken(state.accessToken);
+          }
+        };
+      },
+    }
   )
 );
 
