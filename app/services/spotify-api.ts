@@ -2,7 +2,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 
 const spotifyApi = new SpotifyWebApi();
 
-export const play = (uri: string, device: string) => {
+export const play = (uri: string, device?: string) => {
   return spotifyApi.play({ uris: [uri], device_id: device });
 };
 

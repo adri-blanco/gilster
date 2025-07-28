@@ -1,9 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Button, Text } from "react-native";
-import useAuthStore from "../stores/auth-store";
 import useSpotifyAuth from "../hooks/use-spotify-auth";
-import { useEffect } from "react";
 import { isLoggedIn } from "../utils/auth-utils";
 
 export default function Home() {
