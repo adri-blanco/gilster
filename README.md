@@ -2,11 +2,12 @@
 
 Get a song, try to add it to your timeline in the right position. Good luck
 
-## Crawler
+## Wikipedia crawler
 
 Install the packages needed:
 
 ```console
+cd scraper/wikipedia-scraper
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
