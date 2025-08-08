@@ -15,6 +15,34 @@
       "when": 1754656795635,
       "tag": "0001_hitster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1754663943593,
+      "tag": "0002_hitster_usa_guilty_pleasures",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1754663952854,
+      "tag": "0003_hitster_bingo",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1754663968304,
+      "tag": "0004_hitster_temazos",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1754663980958,
+      "tag": "0005_hitster_summer_party",
+      "breakpoints": true
     }
   ]
 }

@@ -116,7 +116,7 @@ def parse_tracks(data, headers):
 
         tracks.append(track_info)
 
-        time.sleep(1)  # To avoid hitting rate limits
+        time.sleep(1.3)  # To avoid hitting rate limits
     return tracks
 
 
