@@ -9,14 +9,45 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def save_file(file_path, data):
+def save_json_file(file_path, data):
     try:
-        with open(file_path, "w", encoding="utf8") as file:
+        with open(file_path + ".json", "w", encoding="utf8") as file:
             file.truncate(0)
             json.dump(data, file, indent=4)
         print(f"Data saved to {file_path}")
     except Exception as e:
         print(f"Error saving file: {e}")
+
+
+def save_sql_file(file_path, sql):
+    try:
+        with open(file_path + ".sql", "w", encoding="utf8") as file:
+            file.truncate(0)
+            file.write(sql)
+        print(f"SQL saved to {file_path}.sql")
+    except Exception as e:
+        print(f"Error saving SQL file: {e}")
+
+
+def generate_sql(file_path, data):
+    sql = "INSERT INTO songs (title, artist, album, cover, spotify_url, spotify_uri, spotify_id, release, game) VALUES\n"
+    values = []
+
+    for track in data:
+        values.append(
+            f"""('{track['song'].replace("'", "''")}', 
+        '{track['artist'].replace("'", "''")}', 
+        '{track['album'].replace("'", "''")}', 
+        '{track['cover']}', 
+        '{track['spotify_url']}', 
+        '{track['spotify_uri']}', 
+        '{track['spotify_id']}', 
+        {track['release']}, 
+        '{file_path}')"""
+        )
+
+    sql += ",\n".join(values) + ";"
+    return sql
 
 
 def get_release_year_and_album(song, artist, headers):
@@ -104,9 +135,13 @@ def main():
     headers = {"Authorization": f"Bearer {access_token}"}
 
     raw_tracks = get_playlist(playlist_id, headers)
-    tracks = parse_tracks(raw_tracks["items"], headers)
+    print(len(raw_tracks))
+    tracks = parse_tracks(raw_tracks, headers)
 
-    save_file(file_path, tracks)
+    sql = generate_sql(file_path, tracks)
+
+    save_json_file(file_path, tracks)
+    save_sql_file(file_path, sql)
 
 
 if __name__ == "__main__":
