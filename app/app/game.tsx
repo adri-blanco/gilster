@@ -62,7 +62,7 @@ export default function Game() {
         </View>
       )}
 
-      <DeviceConnection device={device} />
+      <DeviceConnection device={device} setDevice={setDevice} />
     </View>
   );
 }
