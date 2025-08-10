@@ -30,17 +30,20 @@ export default function Game() {
     });
   }, []);
 
-  const onPlay = () => {
-    if (!isPlaying && device && currentSong) {
-      play(currentSong.spotify_uri, device.id || undefined).catch((error) => {
-        console.error("Error playing track:", error);
-      });
-    }
-  };
-
   const togglePlay = async () => {
     if (!isPlaying && device && currentSong) {
-      onPlay();
+      play(currentSong.spotify_uri, device.id || undefined)
+        .catch((error) => {
+          console.error("Error playing track:", error);
+        })
+        .then(() => {
+          if (appStore.difficulty > 0) {
+            setTimeout(() => {
+              pause();
+              setIsPlaying(false);
+            }, appStore.difficulty * 1000);
+          }
+        });
     } else {
       pause();
     }
