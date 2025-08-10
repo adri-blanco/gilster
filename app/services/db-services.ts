@@ -1,4 +1,4 @@
-import { count, eq, max, min } from "drizzle-orm";
+import { and, count, eq, max, min, notInArray } from "drizzle-orm";
 import { db } from "../db";
 import { songs, Song } from "../db/schema";
 import { Years } from "../stores/game-slice";
@@ -24,11 +24,14 @@ export async function getYears(): Promise<Years> {
   return output;
 }
 
-export async function getSongs(year: number): Promise<Song[]> {
+export async function getSongs(
+  year: number,
+  usedIds: string[]
+): Promise<Song[]> {
   const res = await db
     .select()
     .from(songs)
-    .where(eq(songs.release, year))
+    .where(and(eq(songs.release, year), notInArray(songs.spotify_uri, usedIds)))
     .orderBy(songs.title);
 
   return res;
