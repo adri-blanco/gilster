@@ -8,6 +8,13 @@ import { useEffect } from "react";
 import Constants from "expo-constants";
 import { updateTokens } from "../services/spotify-services";
 
+export function getRedirectUri() {
+  return makeRedirectUri({
+    scheme: "gilster",
+    path: "--/",
+  });
+}
+
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
@@ -29,10 +36,7 @@ export default function useSpotifyAuth() {
         "user-read-private",
       ],
       usePKCE: true,
-      redirectUri: makeRedirectUri({
-        scheme: "gilster",
-        path: "/",
-      }),
+      redirectUri: getRedirectUri(),
     },
     discovery
   );
@@ -44,17 +48,21 @@ export default function useSpotifyAuth() {
 
       exchangeCodeAsync(
         {
-          clientId: process.env.SPOTIFY_CLIENT_ID || "",
+          clientId: Constants.expoConfig?.extra?.spotifyClientId || "",
           code,
-          redirectUri: makeRedirectUri({ scheme: "gilster", path: "/" }),
+          redirectUri: getRedirectUri(),
           extraParams: {
             code_verifier: codeVerifier,
           },
         },
         discovery
-      ).then((tokenResponse) => {
-        updateTokens(tokenResponse);
-      });
+      )
+        .then((tokenResponse) => {
+          updateTokens(tokenResponse);
+        })
+        .catch((error) => {
+          console.error("Error exchanging code for tokens:", error);
+        });
     }
   }, [response]);
 

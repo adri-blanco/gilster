@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Button, Text, View } from "react-native";
-import useSpotifyAuth from "../hooks/use-spotify-auth";
+import useSpotifyAuth, { getRedirectUri } from "../hooks/use-spotify-auth";
 import { isLoggedIn } from "../utils/auth-utils";
 import { useState } from "react";
 import { db } from "../db";
@@ -9,6 +9,7 @@ import { songs } from "../db/schema";
 import { count } from "drizzle-orm";
 import { Picker } from "@react-native-picker/picker";
 import useAppStore from "../stores/app-store";
+import { makeRedirectUri } from "expo-auth-session";
 
 export default function Home() {
   const router = useRouter();
@@ -26,7 +27,8 @@ export default function Home() {
   return (
     <SafeAreaView className="flex-1 items-center justify-center gap-16">
       <Text>Home page</Text>
-      <Text className="text-lg">{songsCount} songs</Text>
+      <Text className="text-lg">{songsCount} songs?</Text>
+      <Text>{getRedirectUri()}</Text>
 
       {!isLoggedIn() ? (
         <Button title="Login with Spotify" onPress={() => promptAsync()} />
