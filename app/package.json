@@ -5,6 +5,8 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
+    "android:publish": "eas build --platform android --profile preview",
+    "ios:publish": "eas build --platform ios --profile preview",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "migrations:generate": "drizzle-kit generate --name",
@@ -43,5 +45,15 @@
     "drizzle-kit": "^0.31.4",
     "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "prettier-plugin-tailwindcss",
+          "spotify-web-api-node"
+        ]
+      }
+    }
+  }
 }

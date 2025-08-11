@@ -5,6 +5,7 @@ import {
   useAuthRequest,
 } from "expo-auth-session";
 import { useEffect } from "react";
+import Constants from "expo-constants";
 import { updateTokens } from "../services/spotify-services";
 
 const discovery = {
@@ -16,7 +17,7 @@ export default function useSpotifyAuth() {
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Code,
-      clientId: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID || "",
+      clientId: Constants.expoConfig?.extra?.spotifyClientId || "",
       scopes: [
         "user-read-currently-playing",
         "user-read-recently-played",
@@ -43,7 +44,7 @@ export default function useSpotifyAuth() {
 
       exchangeCodeAsync(
         {
-          clientId: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID || "",
+          clientId: process.env.SPOTIFY_CLIENT_ID || "",
           code,
           redirectUri: makeRedirectUri({ scheme: "gilster", path: "/" }),
           extraParams: {

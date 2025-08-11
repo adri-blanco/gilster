@@ -8,7 +8,6 @@ import { db } from "../db";
 import { songs } from "../db/schema";
 import { count } from "drizzle-orm";
 import { Picker } from "@react-native-picker/picker";
-import { useEffect } from "react";
 import useAppStore from "../stores/app-store";
 
 export default function Home() {
