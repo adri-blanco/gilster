@@ -3,10 +3,6 @@ import { useRouter } from "expo-router";
 import { Image, View } from "react-native";
 import useSpotifyAuth from "../hooks/use-spotify-auth";
 import { isLoggedIn } from "../utils/auth-utils";
-import { useState } from "react";
-import { db } from "../db";
-import { songs } from "../db/schema";
-import { count } from "drizzle-orm";
 import { Picker } from "@react-native-picker/picker";
 import useAppStore from "../stores/app-store";
 import Button from "../components/Button";
@@ -15,16 +11,9 @@ const Logo = require("../assets/logo.png");
 
 export default function Home() {
   const router = useRouter();
-  const [songsCount, setSongsCount] = useState(0);
 
   const { promptAsync } = useSpotifyAuth();
   const { difficulty, setDifficulty } = useAppStore();
-
-  db.select({ count: count() })
-    .from(songs)
-    .then((result) => {
-      setSongsCount(result[0].count);
-    });
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center gap-48">
@@ -35,10 +24,15 @@ export default function Home() {
       ) : (
         <View>
           <Picker
-            prompt="Select difficulty"
             selectedValue={difficulty}
-            style={{ height: 50, width: 200 }}
+            style={{
+              height: 50,
+              width: 300,
+              color: "white",
+              marginBottom: 20,
+            }}
             onValueChange={(itemValue) => setDifficulty(itemValue)}
+            dropdownIconColor="white"
           >
             <Picker.Item label="No limit" value={0} />
             <Picker.Item label="30 seconds" value={30} />
