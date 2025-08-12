@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { pause, play, getDevice } from "../services/spotify-services";
 import DeviceConnection from "../components/DeviceConnection";
 import { getYears } from "../services/db-services";
 import { Song } from "../db/schema";
 import useAppStore from "../stores/app-store";
 import { getNextSong } from "../business/game-business";
+import Button from "../components/Button";
+import PlaybackControl from "../components/PlaybackControl";
+import SongCard from "../components/SongCard";
 
 export default function Game() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -65,31 +68,27 @@ export default function Game() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center gap-16">
-      <Text>Game page</Text>
-      <Button title={isPlaying ? "Pause" : "Play"} onPress={togglePlay} />
-      <Button
-        title="See answer"
-        onPress={() => {
-          setShowSong(!showSong);
-        }}
-      />
-
-      {showSong && currentSong && (
-        <View>
-          <Image
-            className="w-32 h-32 rounded-lg"
-            source={{ uri: currentSong.cover }}
-            alt={`Cover art for ${currentSong.title}`}
-          />
-          <Text>Now Playing: {currentSong.title}</Text>
-          <Text>Artist: {currentSong.artist}</Text>
-          <Text>Year: {currentSong.release}</Text>
-
-          <Button title="Next song" onPress={onNextSong} />
+    <View className="flex-1 px-8">
+      <View className="items-space-between flex-1 mb-12">
+        <View className="flex-1 items-center justify-center gap-16">
+          {showSong && currentSong ? (
+            <SongCard song={currentSong} />
+          ) : (
+            <PlaybackControl isPlaying={isPlaying} togglePlay={togglePlay} />
+          )}
         </View>
-      )}
-
+        {!showSong ? (
+          <Button
+            className="items-end"
+            title="See answer"
+            onPress={() => {
+              setShowSong(!showSong);
+            }}
+          />
+        ) : (
+          <Button title="Next song" onPress={onNextSong} />
+        )}
+      </View>
       <DeviceConnection device={device} setDevice={setDevice} />
     </View>
   );
